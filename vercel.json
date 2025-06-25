@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "main.go": {
+      "runtime": "go1.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/main.go"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index_test1_final.html"
+    }
+  ]
+}

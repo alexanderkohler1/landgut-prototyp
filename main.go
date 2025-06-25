@@ -75,6 +75,21 @@ func productsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func Handler(w http.ResponseWriter, r *http.Request) {
+	loadJSONData()
+	
+	switch r.URL.Path {
+	case "/api/providers":
+		providersHandler(w, r)
+	case "/api/provider":
+		providerDetailHandler(w, r)
+	case "/api/products":
+		productsHandler(w, r)
+	default:
+		http.NotFound(w, r)
+	}
+}
+
 func main() {
 	loadJSONData()
 	http.HandleFunc("/api/providers", providersHandler)
