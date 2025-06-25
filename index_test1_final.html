@@ -278,7 +278,8 @@
 </head>
 <body>
   <div class="start" id="startScreen">
-    <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; font-weight: bold; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 4px solid var(--white); z-index: 1;">🌾</div>
+    <img src="https://raw.githubusercontent.com/alexanderkohler1/landgut-prototyp/main/LandGut.png" alt="LandGut Logo" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 4px solid var(--white); z-index: 1;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%); border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 4rem; color: white; font-weight: bold; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 4px solid var(--white); z-index: 1;">🌾</div>
     <h1>Willkommen bei LandGut</h1>
     <p>Entdecken Sie die besten regionalen Anbieter in Ihrer Nähe</p>
     <button class="btn btn-primary" onclick="showMap()">
@@ -552,11 +553,66 @@ let currentProvider = null;
 let providersData = [];
 const homeCoords = [48.594, 8.864];
 
-const hausIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzJFN0QzMiIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfj6E8L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
-const metzgerIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0Q5Mjc0QiIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfpKk8L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
-const baeckerIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0ZGOEYwMCIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfpJY8L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
-const fischIcon   = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE3QTJCOCIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkJ88L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
-const hofIcon     = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzRDQUY1MCIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfjL88L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
+// Bessere Icons mit realistischeren Symbolen
+const hausIcon = L.icon({ 
+  iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#2E7D32" stroke="white" stroke-width="2"/>
+      <path d="M8 18 L16 10 L24 18 L24 24 L8 24 Z" fill="white"/>
+      <rect x="14" y="20" width="4" height="4" fill="#2E7D32"/>
+    </svg>
+  `), 
+  iconSize: [32, 32] 
+});
+
+const metzgerIcon = L.icon({ 
+  iconUrl: 'data:image/svg+xml;base64,' + btoa(`
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#DC3545" stroke="white" stroke-width="2"/>
+      <path d="M12 10 L20 10 L20 14 L18 14 L18 22 L14 22 L14 14 L12 14 Z" fill="white"/>
+      <rect x="10" y="8" width="12" height="3" rx="1" fill="white"/>
+    </svg>
+  `), 
+  iconSize: [32, 32] 
+});
+
+const baeckerIcon = L.icon({ 
+  iconUrl: 'data:image/svg+xml;base64=' + btoa(`
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#FF8F00" stroke="white" stroke-width="2"/>
+      <ellipse cx="16" cy="18" rx="8" ry="5" fill="white"/>
+      <ellipse cx="16" cy="16" rx="6" ry="3" fill="#D4AF37"/>
+      <circle cx="13" cy="15" r="1" fill="#8B4513"/>
+      <circle cx="19" cy="15" r="1" fill="#8B4513"/>
+    </svg>
+  `), 
+  iconSize: [32, 32] 
+});
+
+const fischIcon = L.icon({ 
+  iconUrl: 'data:image/svg+xml;base64=' + btoa(`
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#17A2B8" stroke="white" stroke-width="2"/>
+      <path d="M8 16 Q12 12 16 16 Q20 12 24 16 Q20 20 16 16 Q12 20 8 16" fill="white"/>
+      <circle cx="18" cy="14" r="1.5" fill="#17A2B8"/>
+      <path d="M6 16 L8 14 L8 18 Z" fill="white"/>
+    </svg>
+  `), 
+  iconSize: [32, 32] 
+});
+
+const hofIcon = L.icon({ 
+  iconUrl: 'data:image/svg+xml;base64=' + btoa(`
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#4CAF50" stroke="white" stroke-width="2"/>
+      <path d="M8 20 L12 12 L16 20 L20 12 L24 20" stroke="white" stroke-width="2" fill="none"/>
+      <rect x="10" y="20" width="12" height="6" fill="white" rx="1"/>
+      <circle cx="13" cy="23" r="1" fill="#4CAF50"/>
+      <circle cx="19" cy="23" r="1" fill="#4CAF50"/>
+    </svg>
+  `), 
+  iconSize: [32, 32] 
+});
 
 function showMap() {
   document.getElementById('startScreen').style.display = 'none';
