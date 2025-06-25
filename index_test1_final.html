@@ -278,7 +278,7 @@
 </head>
 <body>
   <div class="start" id="startScreen">
-    <img src="LandGut.png" alt="LandGut Logo">
+    <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; font-weight: bold; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border: 4px solid var(--white); z-index: 1;">🌾</div>
     <h1>Willkommen bei LandGut</h1>
     <p>Entdecken Sie die besten regionalen Anbieter in Ihrer Nähe</p>
     <button class="btn btn-primary" onclick="showMap()">
@@ -552,11 +552,11 @@ let currentProvider = null;
 let providersData = [];
 const homeCoords = [48.594, 8.864];
 
-const hausIcon = L.icon({ iconUrl: 'haus.png', iconSize: [32, 32] });
-const metzgerIcon = L.icon({ iconUrl: 'metzger.png', iconSize: [32, 32] });
-const baeckerIcon = L.icon({ iconUrl: 'baecker.png', iconSize: [32, 32] });
-const fischIcon   = L.icon({ iconUrl: 'fisch.png', iconSize: [32, 32] });
-const hofIcon     = L.icon({ iconUrl: 'gemuese.png', iconSize: [32, 32] });
+const hausIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzJFN0QzMiIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfj6E8L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
+const metzgerIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0Q5Mjc0QiIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfpKk8L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
+const baeckerIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iI0ZGOEYwMCIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfpJY8L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
+const fischIcon   = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE3QTJCOCIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfkJ88L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
+const hofIcon     = L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzRDQUY1MCIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPvCfjL88L3RleHQ+Cjwvc3ZnPgo=', iconSize: [32, 32] });
 
 function showMap() {
   document.getElementById('startScreen').style.display = 'none';
