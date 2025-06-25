@@ -578,26 +578,33 @@ function showMap() {
   L.marker(homeCoords, { icon: hausIcon }).addTo(map)
     .bindPopup('Mein Zuhause – Stuifenweg 1, Herrenberg');
 
-  fetch('./providers.json')
-    .then(res => res.json())
-    .then(providers => {
-      providersData = providers;
-      providers.forEach(p => {
-        let icon = hofIcon;
-        const name = p.name.toLowerCase();
-        if (name.includes("metzgerei") || name.includes("fleisch")) icon = metzgerIcon;
-        else if (name.includes("bäckerei") || name.includes("brot")) icon = baeckerIcon;
-        else if (name.includes("fisch") || name.includes("forelle")) icon = fischIcon;
+  // Anbieter-Daten direkt eingebettet
+  providersData = [
+    {"id": "1", "name": "Bauernhof A", "lat": 48.61283, "lng": 8.88007, "hours": "Mo-Sa 08:00-18:00", "payment": "Bar, Karte, PayPal", "homepage": "http://bauernhof-a.de"},
+    {"id": "2", "name": "Metzgerei B", "lat": 48.62993, "lng": 8.89601, "hours": "Mo-Sa 08:00-18:00", "payment": "Bar, Karte, PayPal, Click & Collect", "homepage": "http://metzgerei-b.de"},
+    {"id": "3", "name": "Bäckerei C", "lat": 48.60973, "lng": 8.87939, "hours": "Mo-Sa 08:00-18:00", "payment": "Bar, Karte", "homepage": "http://bäckerei-c.de"},
+    {"id": "4", "name": "Fischzucht D", "lat": 48.66843, "lng": 8.90981, "hours": "Mo-Sa 08:00-18:00", "payment": "Bar, Karte", "homepage": "http://fischzucht-d.de"},
+    {"id": "5", "name": "Bauernhof E", "lat": 48.62537, "lng": 8.89172, "hours": "Mo-Sa 08:00-18:00", "payment": "Bar, Karte, PayPal", "homepage": "http://bauernhof-e.de"},
+    {"id": "31", "name": "Bio-Metzgerei Schmidt", "lat": 48.6123, "lng": 8.8945, "hours": "Mo-Sa 07:00-19:00", "payment": "Bar, Karte, PayPal, Click & Collect", "homepage": "http://bio-metzgerei-schmidt.de"},
+    {"id": "32", "name": "Hofladen Müller", "lat": 48.6567, "lng": 8.8823, "hours": "Mo-Sa 08:00-18:00, So 10:00-16:00", "payment": "Bar, PayPal", "homepage": "http://hofladen-mueller.de"},
+    {"id": "33", "name": "Traditionsbäckerei Wagner", "lat": 48.6345, "lng": 8.9167, "hours": "Mo-Sa 06:00-18:00", "payment": "Bar, Karte", "homepage": "http://baeckerei-wagner.de"}
+  ];
+  
+  providersData.forEach(p => {
+    let icon = hofIcon;
+    const name = p.name.toLowerCase();
+    if (name.includes("metzgerei") || name.includes("fleisch")) icon = metzgerIcon;
+    else if (name.includes("bäckerei") || name.includes("brot")) icon = baeckerIcon;
+    else if (name.includes("fisch") || name.includes("forelle")) icon = fischIcon;
 
-        const marker = L.marker([p.lat, p.lng], { 
-          icon, 
-          providerName: p.name, 
-          providerPayment: p.payment 
-        }).addTo(map)
-          .bindPopup(`<b>${p.name}</b><br>💳 ${p.payment}<br><button onclick="showDetails('${p.id}')">Details ansehen</button>`);
-        allMarkers.push(marker);
-      });
-    });
+    const marker = L.marker([p.lat, p.lng], { 
+      icon, 
+      providerName: p.name, 
+      providerPayment: p.payment 
+    }).addTo(map)
+      .bindPopup(`<b>${p.name}</b><br>💳 ${p.payment}<br><button onclick="showDetails('${p.id}')">Details ansehen</button>`);
+    allMarkers.push(marker);
+  });
 }
 
 function showAnbieterWerden() {
@@ -664,8 +671,17 @@ async function showDetails(id) {
 }
 
 async function showProducts(id) {
-  const res = await fetch('./products.json');
-  const allProducts = await res.json();
+  // Produkte-Daten direkt eingebettet
+  const allProducts = {
+    "1": [{"name": "Frische Erdbeeren", "price": "4.50", "urgent": "Nur noch heute!"}, {"name": "Bio-Spargel", "price": "8.90", "urgent": "Saison endet bald!"}, {"name": "Kartoffeln", "price": "2.20"}, {"name": "Äpfel", "price": "3.50"}],
+    "2": [{"name": "Rindfleisch", "price": "18.90"}, {"name": "Bratwurst", "price": "6.50"}, {"name": "Hackfleisch", "price": "8.90"}],
+    "3": [{"name": "Vollkornbrot", "price": "3.20"}, {"name": "Croissants", "price": "1.50"}, {"name": "Kuchen", "price": "12.50"}],
+    "4": [{"name": "Forelle", "price": "12.50"}, {"name": "Karpfen", "price": "15.90"}],
+    "5": [{"name": "Bio-Tomaten", "price": "5.20"}, {"name": "Gurken", "price": "2.80"}, {"name": "Salat", "price": "2.50"}],
+    "31": [{"name": "Bio-Rindfleisch", "price": "24.90"}, {"name": "Bio-Bratwurst", "price": "8.50"}, {"name": "Lammfleisch", "price": "28.50"}],
+    "32": [{"name": "Bio-Äpfel", "price": "4.20"}, {"name": "Honig", "price": "8.50"}, {"name": "Eier", "price": "4.80"}],
+    "33": [{"name": "Handwerksbrot", "price": "4.50"}, {"name": "Brezeln", "price": "0.80"}, {"name": "Streuselkuchen", "price": "14.90"}]
+  };
   const products = allProducts[id] || [];
 
   const div = document.getElementById('products');
