@@ -578,7 +578,7 @@ function showMap() {
   L.marker(homeCoords, { icon: hausIcon }).addTo(map)
     .bindPopup('Mein Zuhause – Stuifenweg 1, Herrenberg');
 
-  fetch('/api/providers')
+  fetch('./providers.json')
     .then(res => res.json())
     .then(providers => {
       providersData = providers;
@@ -641,8 +641,7 @@ function loadVouchers() {
 }
 
 async function showDetails(id) {
-  const res = await fetch(`/api/provider?id=${id}`);
-  const provider = await res.json();
+  const provider = providersData.find(p => p.id === id);
   currentProvider = provider;
 
   const d = document.getElementById('details');
@@ -665,8 +664,9 @@ async function showDetails(id) {
 }
 
 async function showProducts(id) {
-  const res = await fetch(`/api/products?id=${id}`);
-  const products = await res.json();
+  const res = await fetch('./products.json');
+  const allProducts = await res.json();
+  const products = allProducts[id] || [];
 
   const div = document.getElementById('products');
   div.style.display = 'block';
