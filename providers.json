@@ -1,0 +1,317 @@
+[
+  {
+    "id": "1",
+    "name": "Bauernhof A",
+    "lat": 48.61283,
+    "lng": 8.88007,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte, PayPal",
+    "homepage": "http://bauernhof-a.de"
+  },
+  {
+    "id": "2",
+    "name": "Metzgerei B",
+    "lat": 48.62993,
+    "lng": 8.89601,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte, PayPal, Click & Collect",
+    "homepage": "http://metzgerei-b.de"
+  },
+  {
+    "id": "3",
+    "name": "B\u00e4ckerei C",
+    "lat": 48.60973,
+    "lng": 8.87939,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-c.de"
+  },
+  {
+    "id": "4",
+    "name": "Fischzucht D",
+    "lat": 48.66843,
+    "lng": 8.90981,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-d.de"
+  },
+  {
+    "id": "5",
+    "name": "Bauernhof E",
+    "lat": 48.62537,
+    "lng": 8.89172,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte, PayPal",
+    "homepage": "http://bauernhof-e.de"
+  },
+  {
+    "id": "6",
+    "name": "Metzgerei F",
+    "lat": 48.66248,
+    "lng": 8.87394,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-f.de"
+  },
+  {
+    "id": "7",
+    "name": "B\u00e4ckerei G",
+    "lat": 48.61308,
+    "lng": 8.88032,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-g.de"
+  },
+  {
+    "id": "8",
+    "name": "Fischzucht H",
+    "lat": 48.62727,
+    "lng": 8.92637,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-h.de"
+  },
+  {
+    "id": "9",
+    "name": "Bauernhof I",
+    "lat": 48.63581,
+    "lng": 8.90859,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://bauernhof-i.de"
+  },
+  {
+    "id": "10",
+    "name": "Metzgerei J",
+    "lat": 48.64096,
+    "lng": 8.929,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-j.de"
+  },
+  {
+    "id": "11",
+    "name": "B\u00e4ckerei K",
+    "lat": 48.60836,
+    "lng": 8.88188,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-k.de"
+  },
+  {
+    "id": "12",
+    "name": "Fischzucht L",
+    "lat": 48.63296,
+    "lng": 8.91668,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-l.de"
+  },
+  {
+    "id": "13",
+    "name": "Bauernhof M",
+    "lat": 48.60076,
+    "lng": 8.92004,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://bauernhof-m.de"
+  },
+  {
+    "id": "14",
+    "name": "Metzgerei N",
+    "lat": 48.65396,
+    "lng": 8.9593,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-n.de"
+  },
+  {
+    "id": "15",
+    "name": "B\u00e4ckerei O",
+    "lat": 48.66699,
+    "lng": 8.95258,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-o.de"
+  },
+  {
+    "id": "16",
+    "name": "Fischzucht P",
+    "lat": 48.63135,
+    "lng": 8.89198,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-p.de"
+  },
+  {
+    "id": "17",
+    "name": "Bauernhof Q",
+    "lat": 48.65397,
+    "lng": 8.93822,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://bauernhof-q.de"
+  },
+  {
+    "id": "18",
+    "name": "Metzgerei R",
+    "lat": 48.61483,
+    "lng": 8.8836,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-r.de"
+  },
+  {
+    "id": "19",
+    "name": "B\u00e4ckerei S",
+    "lat": 48.64492,
+    "lng": 8.87854,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-s.de"
+  },
+  {
+    "id": "20",
+    "name": "Fischzucht T",
+    "lat": 48.63977,
+    "lng": 8.96385,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-t.de"
+  },
+  {
+    "id": "21",
+    "name": "Bauernhof U",
+    "lat": 48.62317,
+    "lng": 8.88453,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://bauernhof-u.de"
+  },
+  {
+    "id": "22",
+    "name": "Metzgerei V",
+    "lat": 48.66556,
+    "lng": 8.90173,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-v.de"
+  },
+  {
+    "id": "23",
+    "name": "B\u00e4ckerei W",
+    "lat": 48.62373,
+    "lng": 8.95533,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-w.de"
+  },
+  {
+    "id": "24",
+    "name": "Fischzucht X",
+    "lat": 48.62913,
+    "lng": 8.93953,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-x.de"
+  },
+  {
+    "id": "25",
+    "name": "Bauernhof Y",
+    "lat": 48.60576,
+    "lng": 8.94657,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://bauernhof-y.de"
+  },
+  {
+    "id": "26",
+    "name": "Metzgerei Z",
+    "lat": 48.6692,
+    "lng": 8.95975,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-z.de"
+  },
+  {
+    "id": "27",
+    "name": "B\u00e4ckerei [",
+    "lat": 48.60694,
+    "lng": 8.89291,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://b\u00e4ckerei-[.de"
+  },
+  {
+    "id": "28",
+    "name": "Fischzucht \\",
+    "lat": 48.66801,
+    "lng": 8.95472,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://fischzucht-\\.de"
+  },
+  {
+    "id": "29",
+    "name": "Bauernhof ]",
+    "lat": 48.67009,
+    "lng": 8.88067,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://bauernhof-].de"
+  },
+  {
+    "id": "30",
+    "name": "Metzgerei ^",
+    "lat": 48.60468,
+    "lng": 8.9042,
+    "hours": "Mo-Sa 08:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://metzgerei-^.de"
+  },
+  {
+    "id": "31",
+    "name": "Bio-Metzgerei Schmidt",
+    "lat": 48.6123,
+    "lng": 8.8945,
+    "hours": "Mo-Sa 07:00-19:00",
+    "payment": "Bar, Karte, PayPal, Click & Collect",
+    "homepage": "http://bio-metzgerei-schmidt.de"
+  },
+  {
+    "id": "32",
+    "name": "Hofladen Müller",
+    "lat": 48.6567,
+    "lng": 8.8823,
+    "hours": "Mo-Sa 08:00-18:00, So 10:00-16:00",
+    "payment": "Bar, PayPal",
+    "homepage": "http://hofladen-mueller.de"
+  },
+  {
+    "id": "33",
+    "name": "Traditionsbäckerei Wagner",
+    "lat": 48.6345,
+    "lng": 8.9167,
+    "hours": "Mo-Sa 06:00-18:00",
+    "payment": "Bar, Karte",
+    "homepage": "http://baeckerei-wagner.de"
+  },
+  {
+    "id": "34",
+    "name": "Moderne Metzgerei Klein",
+    "lat": 48.6789,
+    "lng": 8.8654,
+    "hours": "Mo-Sa 08:00-19:00",
+    "payment": "PayPal, Click & Collect",
+    "homepage": "http://metzgerei-klein.de"
+  },
+  {
+    "id": "35",
+    "name": "Öko-Bauernhof Grün",
+    "lat": 48.6234,
+    "lng": 8.9345,
+    "hours": "Mo-Sa 09:00-17:00",
+    "payment": "Bar, Karte, PayPal",
+    "homepage": "http://oeko-bauernhof-gruen.de"
+  }
+]

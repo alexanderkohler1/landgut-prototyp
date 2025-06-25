@@ -1,0 +1,788 @@
+{
+  "1": [
+    {
+      "name": "Frischer Spargel",
+      "price": "12.99",
+      "seasonal": true,
+      "urgent": "Nur noch diese Woche!"
+    },
+    {
+      "name": "Karotten",
+      "price": "2.49"
+    },
+    {
+      "name": "Äpfel",
+      "price": "3.99"
+    },
+    {
+      "name": "Kartoffeln",
+      "price": "1.99"
+    },
+    {
+      "name": "Tomaten",
+      "price": "3.49"
+    },
+    {
+      "name": "Paprika",
+      "price": "2.99"
+    }
+  ],
+  "2": [
+    {
+      "name": "Bratwurst",
+      "price": "4.99"
+    },
+    {
+      "name": "Rindersteak",
+      "price": "12.49"
+    },
+    {
+      "name": "Leberwurst",
+      "price": "3.99"
+    },
+    {
+      "name": "Hackfleisch",
+      "price": "6.99"
+    },
+    {
+      "name": "Schweineschnitzel",
+      "price": "8.99"
+    }
+  ],
+  "3": [
+    {
+      "name": "Bauernbrot",
+      "price": "3.49"
+    },
+    {
+      "name": "Brötchen",
+      "price": "0.60"
+    },
+    {
+      "name": "Croissant",
+      "price": "1.20"
+    },
+    {
+      "name": "Vollkornbrot",
+      "price": "2.99"
+    },
+    {
+      "name": "Laugenbrezeln",
+      "price": "0.80"
+    }
+  ],
+  "4": [
+    {
+      "name": "Frische Forelle",
+      "price": "8.50"
+    },
+    {
+      "name": "Räucherfisch",
+      "price": "12.90"
+    },
+    {
+      "name": "Lachsfilet",
+      "price": "15.99"
+    },
+    {
+      "name": "Karpfen",
+      "price": "11.50"
+    }
+  ],
+  "5": [
+    {
+      "name": "Frische Erdbeeren",
+      "price": "8.99",
+      "seasonal": true,
+      "urgent": "Solange Vorrat reicht!"
+    },
+    {
+      "name": "Bio-Karotten",
+      "price": "2.99"
+    },
+    {
+      "name": "Bio-Äpfel",
+      "price": "4.49"
+    },
+    {
+      "name": "Bio-Kartoffeln",
+      "price": "2.49"
+    },
+    {
+      "name": "Zucchini",
+      "price": "2.79"
+    },
+    {
+      "name": "Gurken",
+      "price": "1.99"
+    }
+  ],
+  "6": [
+    {
+      "name": "Mettwurst",
+      "price": "3.99"
+    },
+    {
+      "name": "Rinderfilet",
+      "price": "18.49"
+    },
+    {
+      "name": "Grillwurst",
+      "price": "4.99"
+    },
+    {
+      "name": "Speck",
+      "price": "7.99"
+    },
+    {
+      "name": "Kalbsschnitzel",
+      "price": "15.99"
+    }
+  ],
+  "7": [
+    {
+      "name": "Roggenbrot",
+      "price": "2.99"
+    },
+    {
+      "name": "Dinkelbrötchen",
+      "price": "0.70"
+    },
+    {
+      "name": "Streuselkuchen",
+      "price": "12.99"
+    },
+    {
+      "name": "Schwarzbrot",
+      "price": "3.29"
+    },
+    {
+      "name": "Buttercroissant",
+      "price": "1.30"
+    }
+  ],
+  "8": [
+    {
+      "name": "Bachforelle",
+      "price": "7.50"
+    },
+    {
+      "name": "Räucheraal",
+      "price": "18.90"
+    },
+    {
+      "name": "Zander",
+      "price": "13.50"
+    },
+    {
+      "name": "Saibling",
+      "price": "11.90"
+    }
+  ],
+  "9": [
+    {
+      "name": "Salat-Mix",
+      "price": "2.99"
+    },
+    {
+      "name": "Kürbis",
+      "price": "3.49"
+    },
+    {
+      "name": "Zwiebeln",
+      "price": "1.99"
+    },
+    {
+      "name": "Radieschen",
+      "price": "1.49"
+    },
+    {
+      "name": "Sellerie",
+      "price": "2.99"
+    },
+    {
+      "name": "Rote Beete",
+      "price": "2.49"
+    }
+  ],
+  "10": [
+    {
+      "name": "Bio-Wurst",
+      "price": "5.99"
+    },
+    {
+      "name": "Lammfleisch",
+      "price": "16.99"
+    },
+    {
+      "name": "Wildbratwurst",
+      "price": "7.49"
+    },
+    {
+      "name": "Chorizo",
+      "price": "8.99"
+    },
+    {
+      "name": "Landjäger",
+      "price": "6.99"
+    }
+  ],
+  "11": [
+    {
+      "name": "Mehrkornbrot",
+      "price": "3.79"
+    },
+    {
+      "name": "Franzbrötchen",
+      "price": "1.10"
+    },
+    {
+      "name": "Käsekuchen",
+      "price": "13.99"
+    },
+    {
+      "name": "Landbrot",
+      "price": "2.49"
+    },
+    {
+      "name": "Sonntagsbrötchen",
+      "price": "0.65"
+    }
+  ],
+  "12": [
+    {
+      "name": "Regenbogenforelle",
+      "price": "8.90"
+    },
+    {
+      "name": "Felchen",
+      "price": "10.50"
+    },
+    {
+      "name": "Räucherforelle",
+      "price": "14.99"
+    },
+    {
+      "name": "Hecht",
+      "price": "12.90"
+    }
+  ],
+  "13": [
+    {
+      "name": "Blumenkohl",
+      "price": "2.99"
+    },
+    {
+      "name": "Brokkoli",
+      "price": "2.49"
+    },
+    {
+      "name": "Kohlrabi",
+      "price": "1.99"
+    },
+    {
+      "name": "Spinat",
+      "price": "2.99"
+    },
+    {
+      "name": "Mangold",
+      "price": "3.49"
+    },
+    {
+      "name": "Rucola",
+      "price": "2.49"
+    }
+  ],
+  "14": [
+    {
+      "name": "Hirschsteak",
+      "price": "24.99"
+    },
+    {
+      "name": "Wildgulasch",
+      "price": "14.99"
+    },
+    {
+      "name": "Bauernbratwurst",
+      "price": "4.49"
+    },
+    {
+      "name": "Blutwurst",
+      "price": "4.99"
+    },
+    {
+      "name": "Schweinekotelett",
+      "price": "8.99"
+    }
+  ],
+  "15": [
+    {
+      "name": "Steinofenbrot",
+      "price": "4.49"
+    },
+    {
+      "name": "Obstkuchen",
+      "price": "11.99"
+    },
+    {
+      "name": "Apfelstrudel",
+      "price": "9.99"
+    },
+    {
+      "name": "Mohnschnecke",
+      "price": "1.50"
+    },
+    {
+      "name": "Hefezopf",
+      "price": "3.99"
+    }
+  ],
+  "16": [
+    {
+      "name": "Wels",
+      "price": "12.50"
+    },
+    {
+      "name": "Barsch",
+      "price": "9.90"
+    },
+    {
+      "name": "Schleie",
+      "price": "11.50"
+    },
+    {
+      "name": "Forellenkaviar",
+      "price": "24.99"
+    }
+  ],
+  "17": [
+    {
+      "name": "Lauch",
+      "price": "1.99"
+    },
+    {
+      "name": "Fenchel",
+      "price": "2.99"
+    },
+    {
+      "name": "Aubergine",
+      "price": "3.49"
+    },
+    {
+      "name": "Frische Kräuter",
+      "price": "1.99"
+    },
+    {
+      "name": "Bio-Tomaten",
+      "price": "3.99"
+    },
+    {
+      "name": "Süßkartoffeln",
+      "price": "2.99"
+    }
+  ],
+  "18": [
+    {
+      "name": "Salami",
+      "price": "9.99"
+    },
+    {
+      "name": "Leberkäse",
+      "price": "5.49"
+    },
+    {
+      "name": "Kasseler",
+      "price": "8.99"
+    },
+    {
+      "name": "Wiener Würstchen",
+      "price": "3.49"
+    },
+    {
+      "name": "Rohschinken",
+      "price": "12.99"
+    }
+  ],
+  "19": [
+    {
+      "name": "Schwarzwälder Kirschtorte",
+      "price": "16.99"
+    },
+    {
+      "name": "Pumpernickel",
+      "price": "2.99"
+    },
+    {
+      "name": "Baguette",
+      "price": "1.99"
+    },
+    {
+      "name": "Nusszopf",
+      "price": "4.99"
+    },
+    {
+      "name": "Körnerbrötchen",
+      "price": "0.75"
+    }
+  ],
+  "20": [
+    {
+      "name": "Äsche",
+      "price": "13.90"
+    },
+    {
+      "name": "Huchen",
+      "price": "19.50"
+    },
+    {
+      "name": "Rotauge",
+      "price": "7.90"
+    },
+    {
+      "name": "Karpfenfilet",
+      "price": "14.99"
+    }
+  ],
+  "21": [
+    {
+      "name": "Pastinaken",
+      "price": "3.49"
+    },
+    {
+      "name": "Steckrüben",
+      "price": "2.49"
+    },
+    {
+      "name": "Rosenkohl",
+      "price": "2.99"
+    },
+    {
+      "name": "Wirsing",
+      "price": "2.49"
+    },
+    {
+      "name": "Weißkohl",
+      "price": "1.99"
+    },
+    {
+      "name": "Rotkohl",
+      "price": "2.29"
+    }
+  ],
+  "22": [
+    {
+      "name": "Dörrfleisch",
+      "price": "15.99"
+    },
+    {
+      "name": "Gulasch",
+      "price": "9.99"
+    },
+    {
+      "name": "Nackensteak",
+      "price": "7.49"
+    },
+    {
+      "name": "Hack gemischt",
+      "price": "6.49"
+    },
+    {
+      "name": "Bratwurst grob",
+      "price": "5.49"
+    }
+  ],
+  "23": [
+    {
+      "name": "Ciabatta",
+      "price": "2.49"
+    },
+    {
+      "name": "Focaccia",
+      "price": "3.99"
+    },
+    {
+      "name": "Donauwelle",
+      "price": "14.99"
+    },
+    {
+      "name": "Berliner",
+      "price": "1.40"
+    },
+    {
+      "name": "Milchbrötchen",
+      "price": "0.55"
+    }
+  ],
+  "24": [
+    {
+      "name": "Makrele",
+      "price": "6.90"
+    },
+    {
+      "name": "Heilbutt",
+      "price": "22.90"
+    },
+    {
+      "name": "Steinbeißer",
+      "price": "16.50"
+    },
+    {
+      "name": "Räuchermakrele",
+      "price": "8.90"
+    }
+  ],
+  "25": [
+    {
+      "name": "Chinakohl",
+      "price": "1.99"
+    },
+    {
+      "name": "Pak Choi",
+      "price": "2.49"
+    },
+    {
+      "name": "Artischocken",
+      "price": "4.99"
+    },
+    {
+      "name": "Spitzkohl",
+      "price": "2.29"
+    },
+    {
+      "name": "Grünkohl",
+      "price": "2.99"
+    },
+    {
+      "name": "Palmkohl",
+      "price": "3.49"
+    }
+  ],
+  "26": [
+    {
+      "name": "Filetsteak",
+      "price": "19.99"
+    },
+    {
+      "name": "Roastbeef",
+      "price": "16.99"
+    },
+    {
+      "name": "Entrecôte",
+      "price": "22.99"
+    },
+    {
+      "name": "T-Bone Steak",
+      "price": "24.99"
+    },
+    {
+      "name": "Rinderbrust",
+      "price": "12.99"
+    }
+  ],
+  "27": [
+    {
+      "name": "Leinsamenbrot",
+      "price": "3.99"
+    },
+    {
+      "name": "Kürbiskernbrot",
+      "price": "4.49"
+    },
+    {
+      "name": "Rhabarberkuchen",
+      "price": "12.99"
+    },
+    {
+      "name": "Windbeutel",
+      "price": "2.99"
+    },
+    {
+      "name": "Sesambrötchen",
+      "price": "0.80"
+    }
+  ],
+  "28": [
+    {
+      "name": "Bachsaibling",
+      "price": "12.50"
+    },
+    {
+      "name": "Regenbogenforelle geräuchert",
+      "price": "16.90"
+    },
+    {
+      "name": "Lachsforelle",
+      "price": "18.50"
+    },
+    {
+      "name": "Bachforelle geräuchert",
+      "price": "14.90"
+    }
+  ],
+  "29": [
+    {
+      "name": "Rhabarber",
+      "price": "3.99"
+    },
+    {
+      "name": "Stangensellerie",
+      "price": "2.49"
+    },
+    {
+      "name": "Champignons",
+      "price": "2.99"
+    },
+    {
+      "name": "Pfifferlinge",
+      "price": "8.99"
+    },
+    {
+      "name": "Steinpilze",
+      "price": "12.99"
+    },
+    {
+      "name": "Shiitake",
+      "price": "6.99"
+    }
+  ],
+  "30": [
+    {
+      "name": "Rinderroulade",
+      "price": "11.99"
+    },
+    {
+      "name": "Sauerbraten",
+      "price": "13.99"
+    },
+    {
+      "name": "Tafelspitz",
+      "price": "14.99"
+    },
+    {
+      "name": "Suppenfleisch",
+      "price": "8.99"
+    },
+    {
+      "name": "Ochsenschwanz",
+      "price": "9.99"
+    }
+  ],
+  "31": [
+    {
+      "name": "Bio-Bratwurst",
+      "price": "5.99"
+    },
+    {
+      "name": "Bio-Rindfleisch",
+      "price": "18.99"
+    },
+    {
+      "name": "Bio-Leberwurst",
+      "price": "4.49"
+    },
+    {
+      "name": "Bio-Hackfleisch",
+      "price": "8.99"
+    },
+    {
+      "name": "Bio-Schinken",
+      "price": "14.99"
+    }
+  ],
+  "32": [
+    {
+      "name": "Frische Möhren",
+      "price": "2.99"
+    },
+    {
+      "name": "Bio-Eier",
+      "price": "3.49"
+    },
+    {
+      "name": "Hausgemachte Marmelade",
+      "price": "5.99"
+    },
+    {
+      "name": "Honig",
+      "price": "8.99"
+    },
+    {
+      "name": "Kürbiskerne",
+      "price": "4.99"
+    },
+    {
+      "name": "Walnüsse",
+      "price": "6.99"
+    }
+  ],
+  "33": [
+    {
+      "name": "Bauernbrot",
+      "price": "3.99"
+    },
+    {
+      "name": "Croissants",
+      "price": "1.50"
+    },
+    {
+      "name": "Apfelstrudel",
+      "price": "8.99"
+    },
+    {
+      "name": "Krapfen",
+      "price": "1.80"
+    },
+    {
+      "name": "Kaisersemmel",
+      "price": "0.65"
+    }
+  ],
+  "34": [
+    {
+      "name": "Premium-Steak",
+      "price": "24.99"
+    },
+    {
+      "name": "Gourmet-Wurst",
+      "price": "7.99"
+    },
+    {
+      "name": "Dry-Aged Beef",
+      "price": "35.99"
+    },
+    {
+      "name": "Wagyu-Fleisch",
+      "price": "49.99"
+    },
+    {
+      "name": "Trüffelwurst",
+      "price": "12.99"
+    }
+  ],
+  "35": [
+    {
+      "name": "Bio-Kartoffeln",
+      "price": "2.49"
+    },
+    {
+      "name": "Frisches Gemüse-Mix",
+      "price": "4.99"
+    },
+    {
+      "name": "Bio-Honig",
+      "price": "8.99"
+    },
+    {
+      "name": "Kürbis",
+      "price": "3.99"
+    },
+    {
+      "name": "Feldsalat",
+      "price": "2.99"
+    },
+    {
+      "name": "Endivien",
+      "price": "2.49"
+    }
+  ]
+}

@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>LandGut App – Final</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    /* CSS Variables für konsistente Farbpalette */
+    :root {
+      --primary-green: #2E7D32;
+      --secondary-green: #4CAF50;
+      --accent-orange: #FF8F00;
+      --warm-beige: #F5F3F0;
+      --text-dark: #2C2C2C;
+      --text-light: #757575;
+      --white: #FFFFFF;
+      --shadow: rgba(0, 0, 0, 0.15);
+      --gradient: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--warm-beige);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* Startseite Design */
+    .start, .anbieterseite {
+      min-height: 100vh;
+      background: var(--gradient);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .start::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .start img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border: 4px solid var(--white);
+      z-index: 1;
+    }
+
+    .start h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .start p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem;
+      z-index: 1;
+    }
+
+    /* Premium Button Design */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-primary {
+      background: var(--white);
+      color: var(--primary-green);
+      margin: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--white);
+      margin: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+      background: var(--white);
+      color: var(--primary-green);
+    }
+
+    /* Floating Action Buttons */
+    .fab {
+      position: fixed;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 16px var(--shadow);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .fab:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px var(--shadow);
+    }
+
+    #einkaufsliste-btn {
+      top: 20px;
+      right: 20px;
+      background: var(--secondary-green);
+      color: var(--white);
+    }
+
+    #route-btn {
+      top: 20px;
+      right: 90px;
+      background: var(--accent-orange);
+      color: var(--white);
+    }
+
+    #filter-btn {
+      top: 20px;
+      left: 80px;
+      background: #E53E3E;
+      color: var(--white);
+    }
+
+    #notifications-btn {
+      top: 90px;
+      left: 80px;
+      background: #9C27B0;
+      color: var(--white);
+    }
+
+    /* Map Container */
+    #map {
+      height: 70vh;
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px var(--shadow);
+      display: none;
+      margin: 1rem;
+    }
+
+    /* Card Design für Details, Produkte, etc. */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px var(--shadow);
+      padding: 1.5rem;
+      margin: 1rem;
+      display: none;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--shadow);
+    }
+
+    .card h3 {
+      color: var(--primary-green);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .start h1 { font-size: 2rem; }
+      .start p { font-size: 1rem; }
+      .btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
+      .fab { width: 48px; height: 48px; font-size: 1.2rem; }
+      #map { height: 60vh; margin: 0.5rem; }
+    }
+
+    /* Panel Design */
+    .panel {
+      position: fixed;
+      top: 0;
+      background: var(--white);
+      box-shadow: 0 0 24px var(--shadow);
+      z-index: 1000;
+      padding: 2rem;
+      overflow-y: auto;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .panel-left {
+      left: 0;
+      width: 350px;
+      height: 100vh;
+      transform: translateX(-100%);
+    }
+
+    .panel-right {
+      right: 0;
+      width: 350px;
+      height: 100vh;
+      transform: translateX(100%);
+    }
+
+    .panel.open {
+      transform: translateX(0);
+    }
+
+    .panel h3 {
+      color: var(--primary-green);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--text-dark);
+    }
+  </style>
+</head>
+<body>
+  <div class="start" id="startScreen">
+    <img src="LandGut.png" alt="LandGut Logo">
+    <h1>Willkommen bei LandGut</h1>
+    <p>Entdecken Sie die besten regionalen Anbieter in Ihrer Nähe</p>
+    <button class="btn btn-primary" onclick="showMap()">
+      🗺️ Regionale Anbieter entdecken
+    </button>
+    <button class="btn btn-secondary" onclick="showAnbieterWerden()">
+      🤝 Regionaler Anbieter werden
+    </button>
+    <button class="btn btn-primary" onclick="showReferralOffer()">
+      🎉 App weiterempfehlen & 5€ sparen!
+    </button>
+  </div>
+
+  <div class="anbieterseite" id="anbieterScreen" style="display:none;">
+    <h1>Regionaler Anbieter werden</h1>
+    <p>Wir freuen uns sehr, dass Sie regionaler Anbieter werden wollen.<br>
+    Bitte melden Sie sich telefonisch oder schriftlich bei uns:<br><br>
+    <b>LandGut GmbH</b><br>
+    Musterstraße 12<br>
+    71032 Böblingen<br><br>
+    Tel.: 07031 123456<br>
+    E-Mail: kontakt@landgut-region.de</p>
+    <button class="btn btn-secondary" onclick="goBackHome()">Zurück zur Startseite</button>
+  </div>
+
+  <div class="anbieterseite" id="referralScreen" style="display:none;">
+    <h1>🎉 App weiterempfehlen & 5€ sparen!</h1>
+    <p>Empfehle LandGut deinen Freunden und Familie!<br><br>
+    <b>So funktioniert's:</b><br>
+    1. Teile deinen persönlichen Empfehlungslink<br>
+    2. Deine Freunde laden die App herunter<br>
+    3. Du erhältst einen 5€ Rabattgutschein!<br><br>
+    <b>Dein Empfehlungslink:</b><br>
+    <input type="text" id="referralLink" value="https://landgut-app.de/ref/USER123" readonly style="width:300px; padding:10px; margin:10px; border-radius:8px; border:1px solid #ccc;">
+    <button class="btn btn-primary" onclick="copyReferralLink()">📋 Link kopieren</button><br><br>
+    <b>Deine Gutscheine:</b><br>
+    <div id="voucherList">
+      <p>🎫 Noch keine Gutscheine verfügbar</p>
+    </div>
+    </p>
+    <button class="btn btn-secondary" onclick="goBackHome()">Zurück zur Startseite</button>
+  </div>
+
+  <!-- Floating Action Buttons -->
+  <button id="einkaufsliste-btn" class="fab" onclick="toggleList()" title="Meine Einkaufsliste">🛒</button>
+  <button id="route-btn" class="fab" onclick="planRoute()" title="Route planen">🗺️</button>
+  <button id="filter-btn" class="fab" onclick="toggleFilter()" title="Filter">🔍</button>
+  <button id="notifications-btn" class="fab" onclick="showNotifications()" title="Benachrichtigungen">🔔</button>
+
+  <div id="map"></div>
+  
+  <div id="details" class="card">
+    <!-- Details werden hier eingefügt -->
+  </div>
+  
+  <div id="products" class="card">
+    <!-- Produkte werden hier eingefügt -->
+  </div>
+  
+  <div id="einkaufsliste" class="card">
+    <h3>🛒 Meine Einkaufsliste</h3>
+    <ul id="liste" style="list-style: none; padding: 0;"></ul>
+    <div id="checkout-summary" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+      <h4>💰 Einkaufsplanung & Vorabzahlung</h4>
+      <div id="payment-breakdown"></div>
+      <div style="border-top: 2px solid #28a745; margin-top: 10px; padding-top: 10px;">
+        <strong id="total-amount"></strong>
+      </div>
+      <button class="btn btn-primary" onclick="startLandGutPayment()" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+        💳 Mit LandGut Pay bezahlen
+      </button>
+      <p style="font-size: 0.9rem; color: #666; margin-top: 8px; text-align: center;">
+        🚀 Vorabzahlung für traditionelle Anbieter + 2€ Servicegebühr
+      </p>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-primary" onclick="clearList()">🗑️ Liste leeren</button>
+      <button class="btn btn-primary" onclick="planCheckout()" style="background: #28a745;">💰 Einkauf planen</button>
+    </div>
+  </div>
+
+  <div id="clickCollectModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000;">
+    <div style="background:white; margin:10% auto; padding:20px; width:80%; max-width:500px; border-radius:12px; position:relative;">
+      <span onclick="closeClickCollect()" style="position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer;">&times;</span>
+      <h3>🥩 Click & Collect Bestellung</h3>
+      <div id="clickCollectContent">
+        <p>Wählen Sie Ihre gewünschte Abholzeit:</p>
+        <select id="pickupTime" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+          <option value="">Abholzeit wählen...</option>
+          <option value="heute-15">Heute 15:00</option>
+          <option value="heute-16">Heute 16:00</option>
+          <option value="heute-17">Heute 17:00</option>
+          <option value="morgen-10">Morgen 10:00</option>
+          <option value="morgen-11">Morgen 11:00</option>
+          <option value="morgen-15">Morgen 15:00</option>
+        </select>
+        <p>Ihre Bestellung:</p>
+        <div id="orderSummary"></div>
+        <input type="text" id="customerName" placeholder="Ihr Name" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+        <input type="tel" id="customerPhone" placeholder="Ihre Telefonnummer" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+        <button onclick="confirmClickCollect()" style="width:100%; padding:15px; background-color:#4CAF50; color:white; border:none; border-radius:8px; font-size:16px; margin-top:10px;">Bestellung bestätigen</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="paypalModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000;">
+    <div style="background:white; margin:10% auto; padding:20px; width:80%; max-width:500px; border-radius:12px; position:relative;">
+      <span onclick="closePayPalModal()" style="position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer;">&times;</span>
+      <h3>💳 Mit PayPal vorab bezahlen</h3>
+      <div id="paypalContent">
+        <div id="paypalOrderDetails"></div>
+        <p><strong>Zahlungsart:</strong> PayPal</p>
+        <p><strong>Abholung:</strong> Nach Zahlungsbestätigung</p>
+        <input type="text" id="paypalCustomerName" placeholder="Ihr Name" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+        <input type="email" id="paypalCustomerEmail" placeholder="Ihre E-Mail-Adresse" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+        <input type="tel" id="paypalCustomerPhone" placeholder="Ihre Telefonnummer" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc;">
+        <button onclick="processPayPalPayment()" style="width:100%; padding:15px; background-color:#0070ba; color:white; border:none; border-radius:8px; font-size:16px; margin-top:10px;">💳 Jetzt mit PayPal bezahlen</button>
+        <p style="font-size:12px; color:#666; margin-top:10px;">Hinweis: Dies ist eine Demo-Implementation. In der echten App würde hier die PayPal-Integration stattfinden.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="filterPanel" class="panel panel-left">
+    <h3>🔍 Filter & Suche</h3>
+    <button onclick="toggleFilter()" class="close-btn">✕</button>
+    
+    <h4>🔍 Anbieter suchen:</h4>
+    <input type="text" id="search-provider" placeholder="Name eingeben (z.B. Schmidt, Wagner...)" 
+           style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; font-size: 14px;"
+           oninput="applyFilters()" onkeyup="applyFilters()">
+    <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+      <button onclick="clearSearch()" style="flex: 1; padding: 8px; background: #dc3545; color: white; border: none; border-radius: 6px; font-size: 12px;">🗑️ Löschen</button>
+      <button onclick="searchAndZoom()" style="flex: 1; padding: 8px; background: #28a745; color: white; border: none; border-radius: 6px; font-size: 12px;">🎯 Hinzoomen</button>
+    </div>
+    
+    <div style="background: #f8f9fa; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 12px; color: #666;">
+      <strong>💡 Suche-Tipp:</strong><br>
+      • Gib "Schmidt" ein → findet Bio-Metzgerei Schmidt<br>
+      • Gib "Wagner" ein → findet Traditionsbäckerei Wagner<br>
+      • Gib "Müller" ein → findet Hofladen Müller
+    </div>
+    
+    <h4>Anbieter-Typ:</h4>
+    <label><input type="checkbox" id="filter-metzger" checked onchange="applyFilters()"> 🥩 Metzgereien</label><br>
+    <label><input type="checkbox" id="filter-baecker" checked onchange="applyFilters()"> 🥖 Bäckereien</label><br>
+    <label><input type="checkbox" id="filter-hofladen" checked onchange="applyFilters()"> 🌿 Hofläden</label><br>
+    <label><input type="checkbox" id="filter-fisch" checked onchange="applyFilters()"> 🐟 Fischzucht</label><br>
+    
+    <h4>💳 Zahlungsarten:</h4>
+    <label><input type="checkbox" id="filter-bar" checked onchange="applyFilters()"> 💵 Barzahlung</label><br>
+    <label><input type="checkbox" id="filter-karte" checked onchange="applyFilters()"> 💳 Kartenzahlung</label><br>
+    <label><input type="checkbox" id="filter-paypal" checked onchange="applyFilters()"> 🅿️ PayPal</label><br>
+    <label><input type="checkbox" id="filter-clickcollect" checked onchange="applyFilters()"> 🥩 Click & Collect</label><br>
+    
+    <h4>🔥 Aktuelle Angebote:</h4>
+    <div id="currentOffers">
+      <div style="background:#ffe6e6; padding:10px; margin:5px 0; border-radius:8px; border-left:4px solid #ff4444;">
+        <strong>Metzgerei B</strong><br>
+        🔥 Bratwurst -20% (Nur heute!)
+      </div>
+      <div style="background:#fff3cd; padding:10px; margin:5px 0; border-radius:8px; border-left:4px solid #ffc107;">
+        <strong>Bauernhof A</strong><br>
+        🌱 Frischer Spargel - Nur noch diese Woche!<br>
+        <small style="color:#d68910;">⏰ Saison endet bald</small>
+      </div>
+      <div style="background:#f8d7da; padding:10px; margin:5px 0; border-radius:8px; border-left:4px solid #dc3545;">
+        <strong>Bauernhof E</strong><br>
+        🍓 Frische Erdbeeren - Solange Vorrat reicht<br>
+        <small style="color:#b02a37;">📦 Begrenzte Menge verfügbar</small>
+      </div>
+      <div style="background:#e6f3ff; padding:10px; margin:5px 0; border-radius:8px; border-left:4px solid #0070ba;">
+        <strong>Bio-Metzgerei Schmidt</strong><br>
+        💳 Jetzt auch PayPal & Click & Collect!<br>
+        <small style="color:#005588;">🆕 Neue Zahlungsoptionen verfügbar</small>
+      </div>
+    </div>
+    
+    <h4>⭐ Lieblingsanbieter:</h4>
+    <div id="favoritesList">
+      <p style="color:#666;">Noch keine Favoriten</p>
+    </div>
+  </div>
+
+  <div id="notificationPanel" class="panel panel-right">
+    <h3>🔔 Benachrichtigungen</h3>
+    <button onclick="showNotifications()" class="close-btn">✕</button>
+    
+    <h4>🌱 Saisonale Verfügbarkeit:</h4>
+    <div id="seasonalNotifications">
+      <div style="background:#fff3cd; padding:10px; margin:10px 0; border-radius:8px; border-left:4px solid #ffc107;">
+        <strong>🌱 Spargel - Saison endet bald!</strong><br>
+        <small>Bauernhof A - Nur noch diese Woche verfügbar</small><br>
+        <button onclick="setAvailabilityAlert('Spargel', 'Bauernhof A')" style="margin-top:5px; padding:5px 10px; background:#dc3545; color:white; border:none; border-radius:4px; font-size:12px;">⏰ Jetzt bestellen!</button>
+      </div>
+      <div style="background:#f8d7da; padding:10px; margin:10px 0; border-radius:8px; border-left:4px solid #dc3545;">
+        <strong>🍓 Erdbeeren - Begrenzte Menge!</strong><br>
+        <small>Bauernhof E - Solange Vorrat reicht</small><br>
+        <button onclick="setAvailabilityAlert('Erdbeeren', 'Bauernhof E')" style="margin-top:5px; padding:5px 10px; background:#28a745; color:white; border:none; border-radius:4px; font-size:12px;">📱 Vorrat-Alert aktivieren</button>
+      </div>
+      <div style="background:#d1ecf1; padding:10px; margin:10px 0; border-radius:8px; border-left:4px solid #17a2b8;">
+        <strong>🍎 Äpfel - Neue Ernte</strong><br>
+        <small>Bauernhof E - Jetzt verfügbar</small><br>
+        <span style="color:#666; font-size:12px;">Benachrichtigung bereits aktiviert ✓</span>
+      </div>
+    </div>
+    
+    <h4>🏷️ Angebots-Alerts:</h4>
+    <div id="offerNotifications">
+      <div style="background:#f8d7da; padding:10px; margin:10px 0; border-radius:8px; border-left:4px solid #dc3545;">
+        <strong>🥩 Fleisch-Spezial</strong><br>
+        <small>Metzgerei B - 20% Rabatt heute</small>
+      </div>
+    </div>
+    
+    <h4>⚙️ Benachrichtigungs-Einstellungen:</h4>
+    <label><input type="checkbox" id="notify-seasonal" checked> 🌱 Saisonale Produkte</label><br>
+    <label><input type="checkbox" id="notify-offers" checked> 🔥 Spezielle Angebote</label><br>
+    <label><input type="checkbox" id="notify-favorites" checked> ⭐ Lieblingsanbieter</label><br>
+  </div>
+
+  <div id="landgutPayModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000;">
+    <div style="background:white; margin:5% auto; padding:20px; width:90%; max-width:600px; border-radius:16px; position:relative; max-height:80vh; overflow-y:auto;">
+      <span onclick="closeLandGutPay()" class="close-btn">✕</span>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 style="color: #28a745; margin: 0;">💳 LandGut Pay</h2>
+        <p style="color: #666; margin: 5px 0;">Vorabzahlung für traditionelle Anbieter</p>
+      </div>
+      
+      <div id="landgut-order-summary" style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+        <!-- Bestellübersicht wird hier eingefügt -->
+      </div>
+      
+      <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid #28a745;">
+        <h4 style="margin: 0 0 10px 0; color: #28a745;">🚀 So funktioniert LandGut Pay:</h4>
+        <ul style="margin: 0; padding-left: 20px; color: #555;">
+          <li>Du bezahlst bequem vorab über unsere App</li>
+          <li>Wir leiten das Geld an die Anbieter weiter</li>
+          <li>Du holst deine Produkte einfach ab</li>
+          <li>Servicegebühr: nur 2€ für den gesamten Einkauf</li>
+        </ul>
+      </div>
+      
+      <div style="margin-bottom: 20px;">
+        <h4>📋 Deine Kontaktdaten:</h4>
+        <input type="text" id="landgut-customer-name" placeholder="Dein Name" style="width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd;">
+        <input type="email" id="landgut-customer-email" placeholder="Deine E-Mail" style="width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd;">
+        <input type="tel" id="landgut-customer-phone" placeholder="Deine Handynummer" style="width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd;">
+      </div>
+      
+      <div style="background: #fff3cd; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+        <h4 style="margin: 0 0 10px 0; color: #856404;">⏰ Abholtermine:</h4>
+        <div id="pickup-schedule">
+          <!-- Abholtermine werden hier eingefügt -->
+        </div>
+      </div>
+      
+      <button onclick="processLandGutPayment()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: 600;">
+        💳 Jetzt mit LandGut Pay bezahlen
+      </button>
+      
+      <p style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 15px;">
+        🔒 Sichere Zahlung über LandGut • Die Anbieter erhalten das Geld nach erfolgreicher Abholung
+      </p>
+    </div>
+  </div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+let map;
+let currentProvider = null;
+let providersData = [];
+const homeCoords = [48.594, 8.864];
+
+const hausIcon = L.icon({ iconUrl: 'haus.png', iconSize: [32, 32] });
+const metzgerIcon = L.icon({ iconUrl: 'metzger.png', iconSize: [32, 32] });
+const baeckerIcon = L.icon({ iconUrl: 'baecker.png', iconSize: [32, 32] });
+const fischIcon   = L.icon({ iconUrl: 'fisch.png', iconSize: [32, 32] });
+const hofIcon     = L.icon({ iconUrl: 'gemuese.png', iconSize: [32, 32] });
+
+function showMap() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('anbieterScreen').style.display = 'none';
+  document.getElementById('map').style.display = 'block';
+  document.getElementById('einkaufsliste-btn').style.display = 'block';
+  document.getElementById('route-btn').style.display = 'block';
+  document.getElementById('filter-btn').style.display = 'block';
+  document.getElementById('notifications-btn').style.display = 'block';
+
+  map = L.map('map').setView([48.68, 9.01], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap-Mitwirkende'
+  }).addTo(map);
+
+  L.circleMarker([48.68, 9.01], { radius: 8, color: 'blue', fillColor: 'blue', fillOpacity: 0.5 })
+    .addTo(map).bindPopup('Hier befinde ich mich');
+
+  L.marker(homeCoords, { icon: hausIcon }).addTo(map)
+    .bindPopup('Mein Zuhause – Stuifenweg 1, Herrenberg');
+
+  fetch('/api/providers')
+    .then(res => res.json())
+    .then(providers => {
+      providersData = providers;
+      providers.forEach(p => {
+        let icon = hofIcon;
+        const name = p.name.toLowerCase();
+        if (name.includes("metzgerei") || name.includes("fleisch")) icon = metzgerIcon;
+        else if (name.includes("bäckerei") || name.includes("brot")) icon = baeckerIcon;
+        else if (name.includes("fisch") || name.includes("forelle")) icon = fischIcon;
+
+        const marker = L.marker([p.lat, p.lng], { 
+          icon, 
+          providerName: p.name, 
+          providerPayment: p.payment 
+        }).addTo(map)
+          .bindPopup(`<b>${p.name}</b><br>💳 ${p.payment}<br><button onclick="showDetails('${p.id}')">Details ansehen</button>`);
+        allMarkers.push(marker);
+      });
+    });
+}
+
+function showAnbieterWerden() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('map').style.display = 'none';
+  document.getElementById('anbieterScreen').style.display = 'flex';
+}
+
+function goBackHome() {
+  location.reload();
+}
+
+function showReferralOffer() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('map').style.display = 'none';
+  document.getElementById('anbieterScreen').style.display = 'none';
+  document.getElementById('referralScreen').style.display = 'flex';
+  loadVouchers();
+}
+
+function copyReferralLink() {
+  const linkInput = document.getElementById('referralLink');
+  linkInput.select();
+  linkInput.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(linkInput.value);
+  alert('Empfehlungslink wurde kopiert!');
+}
+
+function loadVouchers() {
+  const vouchers = JSON.parse(localStorage.getItem('userVouchers') || '[]');
+  const voucherList = document.getElementById('voucherList');
+  
+  if (vouchers.length === 0) {
+    voucherList.innerHTML = '<p>🎫 Noch keine Gutscheine verfügbar</p>';
+  } else {
+    voucherList.innerHTML = '';
+    vouchers.forEach((voucher, index) => {
+      voucherList.innerHTML += `<p>🎫 Gutschein #${index + 1}: ${voucher.amount}€ - ${voucher.used ? 'Verwendet' : 'Verfügbar'}</p>`;
+    });
+  }
+}
+
+async function showDetails(id) {
+  const res = await fetch(`/api/provider?id=${id}`);
+  const provider = await res.json();
+  currentProvider = provider;
+
+  const d = document.getElementById('details');
+  d.style.display = 'block';
+  const isMetzgerei = provider.name.toLowerCase().includes('metzgerei');
+  const clickCollectButton = isMetzgerei ? 
+    `<button onclick="startClickCollect('${provider.id}')" style="background-color:#FF6B35; margin-top:10px;">🥩 Click & Collect bestellen</button>` : '';
+  
+  const favoriteButton = `<button onclick="toggleFavorite('${provider.id}', '${provider.name}')" id="fav-${provider.id}" style="background-color:#FFA500; margin-top:10px;">⭐ Als Favorit hinzufügen</button>`;
+  
+  d.innerHTML = `<h3>${provider.name}</h3>
+    <p>Öffnungszeiten: ${provider.hours}</p>
+    <p>Zahlung: ${provider.payment}</p>
+    <p><a href='${provider.homepage}' target='_blank'>Homepage besuchen</a></p>
+    <button onclick="showProducts('${provider.id}')">Produkte ansehen</button>
+    ${clickCollectButton}
+    ${favoriteButton}`;
+    
+  updateFavoriteButton(provider.id);
+}
+
+async function showProducts(id) {
+  const res = await fetch(`/api/products?id=${id}`);
+  const products = await res.json();
+
+  const div = document.getElementById('products');
+  div.style.display = 'block';
+  const isMetzgereiOrHofladen = currentProvider.name.toLowerCase().includes('metzgerei') || 
+                                currentProvider.name.toLowerCase().includes('bauernhof');
+  
+  div.innerHTML = '<h3>🌿 Produkte</h3>';
+  products.forEach(p => {
+    const paypalButton = (isMetzgereiOrHofladen && p.price) ? 
+      `<button class="btn btn-primary" onclick="payWithPayPal('${p.name}', '${p.price}', '${currentProvider.name}')" style="background-color:#0070ba; color:white; margin-left:10px;">💳 Jetzt mit PayPal zahlen</button>` : '';
+    
+    // Saisonale/urgente Produkte hervorheben
+    const isUrgent = p.urgent;
+    const productStyle = isUrgent ? 
+      'background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border: 2px solid #ffc107; border-radius: 12px; padding: 15px; margin: 10px 0; box-shadow: 0 4px 16px rgba(255, 193, 7, 0.3);' : 
+      'background: white; border-radius: 8px; padding: 10px; margin: 5px 0; border-left: 4px solid var(--secondary-green);';
+    
+    const urgentBadge = isUrgent ? `<span style="background: #dc3545; color: white; font-size: 0.8rem; padding: 2px 8px; border-radius: 12px; margin-left: 8px;">⏰ ${p.urgent}</span>` : '';
+    
+    div.innerHTML += `<div style="${productStyle}">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+        <div>
+          <strong>${p.name}</strong>${p.price ? ' (' + p.price + ' €)' : ''}${urgentBadge}
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+          <button class="btn btn-primary" onclick="addToList('${p.name}', '${p.price}', '${currentProvider.name}')" style="padding: 8px 16px; font-size: 0.9rem;">🛒 Hinzufügen</button>
+          ${paypalButton}
+        </div>
+      </div>
+    </div>`;
+  });
+  
+  if (isMetzgereiOrHofladen) {
+    div.innerHTML += `<div style="background-color:#f0f8ff; padding:15px; margin-top:20px; border-radius:8px; border-left:4px solid #0070ba;">
+      <h4>💳 Vorabzahlung verfügbar</h4>
+      <p>Bei ${currentProvider.name} können Sie bequem vorab mit PayPal bezahlen und Ihre Bestellung zur gewünschten Zeit abholen!</p>
+    </div>`;
+  }
+}
+
+function addToList(name, price, provider) {
+  const list = JSON.parse(localStorage.getItem('einkaufsliste') || '[]');
+  list.push({name, price, provider, checked: false});
+  localStorage.setItem('einkaufsliste', JSON.stringify(list));
+  updateList();
+}
+
+function toggleList() {
+  const el = document.getElementById('einkaufsliste');
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+  updateList();
+}
+
+function updateList() {
+  const items = JSON.parse(localStorage.getItem('einkaufsliste') || '[]');
+  const ul = document.getElementById('liste');
+  ul.innerHTML = '';
+  items.forEach((item, i) => {
+    const li = document.createElement('li');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = item.checked;
+    checkbox.onchange = () => {
+      items[i].checked = checkbox.checked;
+      localStorage.setItem('einkaufsliste', JSON.stringify(items));
+    };
+    li.appendChild(checkbox);
+    li.append(` ${item.name}${item.price ? ' (' + item.price + ' €)' : ''} – von ${item.provider}`);
+    ul.appendChild(li);
+  });
+}
+
+function clearList() {
+  localStorage.removeItem('einkaufsliste');
+  updateList();
+}
+
+function planRoute() {
+  const items = JSON.parse(localStorage.getItem('einkaufsliste') || '[]');
+  const uniqueProviders = [...new Set(items.map(i => i.provider))];
+  const coords = providersData.filter(p => uniqueProviders.includes(p.name));
+
+  if (!coords.length) {
+    alert('Einkaufsliste leer oder keine Anbieter erkannt.');
+    return;
+  }
+
+  let url = 'https://www.google.com/maps/dir/48.68,9.01';
+  coords.forEach(p => { url += `/${p.lat},${p.lng}`; });
+  url += `/${homeCoords[0]},${homeCoords[1]}`;
+  window.open(url, '_blank');
+}
+
+function startClickCollect(providerId) {
+  const items = JSON.parse(localStorage.getItem('einkaufsliste') || '[]');
+  const providerItems = items.filter(item => item.provider === currentProvider.name);
+  
+  if (providerItems.length === 0) {
+    alert('Bitte fügen Sie erst Produkte zur Einkaufsliste hinzu!');
+    return;
+  }
+  
+  document.getElementById('clickCollectModal').style.display = 'block';
+  updateOrderSummary(providerItems);
+}
+
+function updateOrderSummary(items) {
+  const summary = document.getElementById('orderSummary');
+  let total = 0;
+  let html = '<ul>';
+  
+  items.forEach(item => {
+    const price = parseFloat(item.price) || 0;
+    total += price;
+    html += `<li>${item.name}${item.price ? ' - ' + item.price + '€' : ''}</li>`;
+  });
+  
+  html += '</ul>';
+  html += `<p><strong>Gesamtsumme: ${total.toFixed(2)}€</strong></p>`;
+  summary.innerHTML = html;
+}
+
+function closeClickCollect() {
+  document.getElementById('clickCollectModal').style.display = 'none';
+}
+
+function confirmClickCollect() {
+  const pickupTime = document.getElementById('pickupTime').value;
+  const customerName = document.getElementById('customerName').value;
+  const customerPhone = document.getElementById('customerPhone').value;
+  
+  if (!pickupTime || !customerName || !customerPhone) {
+    alert('Bitte füllen Sie alle Felder aus!');
+    return;
+  }
+  
+  const orders = JSON.parse(localStorage.getItem('clickCollectOrders') || '[]');
+  const orderId = 'CC' + Date.now();
+  
+  orders.push({
+    orderId,
+    provider: currentProvider.name,
+    pickupTime,
+    customerName,
+    customerPhone,
+    items: JSON.parse(localStorage.getItem('einkaufsliste') || '[]').filter(item => item.provider === currentProvider.name),
+    status: 'bestätigt',
+    orderDate: new Date().toLocaleString('de-DE')
+  });
+  
+  localStorage.setItem('clickCollectOrders', JSON.stringify(orders));
+  
+  alert(`Ihre Click & Collect Bestellung wurde bestätigt!\nBestellnummer: ${orderId}\nAbholung: ${pickupTime.replace('-', ' ')}\nSie erhalten eine Bestätigung per SMS.`);
+  
+  closeClickCollect();
+}
+
+let currentPayPalItem = null;
+
+function payWithPayPal(productName, price, providerName) {
+  currentPayPalItem = { productName, price, providerName };
+  document.getElementById('paypalModal').style.display = 'block';
+  
+  const details = document.getElementById('paypalOrderDetails');
+  details.innerHTML = `
+    <div style="background-color:#f9f9f9; padding:15px; border-radius:8px; margin-bottom:15px;">
+      <h4>Bestelldetails:</h4>
+      <p><strong>Produkt:</strong> ${productName}</p>
+      <p><strong>Anbieter:</strong> ${providerName}</p>
+      <p><strong>Preis:</strong> ${price}€</p>
+    </div>
+  `;
+}
+
+function closePayPalModal() {
+  document.getElementById('paypalModal').style.display = 'none';
+  currentPayPalItem = null;
+}
+
+function processPayPalPayment() {
+  const customerName = document.getElementById('paypalCustomerName').value;
+  const customerEmail = document.getElementById('paypalCustomerEmail').value;
+  const customerPhone = document.getElementById('paypalCustomerPhone').value;
+  
+  if (!customerName || !customerEmail || !customerPhone) {
+    alert('Bitte füllen Sie alle Felder aus!');
+    return;
+  }
+  
+  if (!currentPayPalItem) {
+    alert('Fehler: Kein Produkt ausgewählt!');
+    return;
+  }
+  
+  const paymentId = 'PP' + Date.now();
+  const payments = JSON.parse(localStorage.getItem('paypalPayments') || '[]');
+  
+  payments.push({
+    paymentId,
+    productName: currentPayPalItem.productName,
+    provider: currentPayPalItem.providerName,
+    amount: currentPayPalItem.price,
+    customerName,
+    customerEmail,
+    customerPhone,
+    status: 'bezahlt',
+    paymentDate: new Date().toLocaleString('de-DE'),
+    paymentMethod: 'PayPal'
+  });
+  
+  localStorage.setItem('paypalPayments', JSON.stringify(payments));
+  
+  alert(`✅ Zahlung erfolgreich!\n\nZahlungs-ID: ${paymentId}\nProdukt: ${currentPayPalItem.productName}\nBetrag: ${currentPayPalItem.price}€\n\nSie können das Produkt jetzt bei ${currentPayPalItem.providerName} abholen.\nEine Bestätigung wurde an ${customerEmail} gesendet.`);
+  
+  closePayPalModal();
+}
+
+// Filter-System
+let allMarkers = [];
+
+function toggleFilter() {
+  const panel = document.getElementById('filterPanel');
+  panel.classList.toggle('open');
+}
+
+function showNotifications() {
+  const panel = document.getElementById('notificationPanel');
+  panel.classList.toggle('open');
+}
+
+function applyFilters() {
+  // Such-Filter
+  const searchTerm = document.getElementById('search-provider').value.toLowerCase().trim();
+  
+  // Anbieter-Typ Filter
+  const showMetzger = document.getElementById('filter-metzger').checked;
+  const showBaecker = document.getElementById('filter-baecker').checked;
+  const showHofladen = document.getElementById('filter-hofladen').checked;
+  const showFisch = document.getElementById('filter-fisch').checked;
+  
+  // Zahlungsarten Filter
+  const showBar = document.getElementById('filter-bar').checked;
+  const showKarte = document.getElementById('filter-karte').checked;
+  const showPaypal = document.getElementById('filter-paypal').checked;
+  const showClickCollect = document.getElementById('filter-clickcollect').checked;
+  
+  let visibleCount = 0;
+  
+  allMarkers.forEach(marker => {
+    const providerName = marker.options.providerName.toLowerCase();
+    const providerPayment = marker.options.providerPayment.toLowerCase();
+    
+    // Such-Filter prüfen
+    let searchMatches = true;
+    if (searchTerm.length > 0) {
+      searchMatches = providerName.includes(searchTerm);
+    }
+    
+    // Typ-Filter prüfen (nur wenn kein Suchterm eingegeben)
+    let typeMatches = true;
+    if (searchTerm.length === 0) {
+      typeMatches = false;
+      if (showMetzger && providerName.includes('metzgerei')) typeMatches = true;
+      if (showBaecker && providerName.includes('bäckerei')) typeMatches = true;
+      if (showHofladen && (providerName.includes('bauernhof') || providerName.includes('hofladen'))) typeMatches = true;
+      if (showFisch && providerName.includes('fisch')) typeMatches = true;
+    }
+    
+    // Zahlungsarten-Filter prüfen
+    let paymentMatches = false;
+    if (showBar && providerPayment.includes('bar')) paymentMatches = true;
+    if (showKarte && providerPayment.includes('karte')) paymentMatches = true;
+    if (showPaypal && providerPayment.includes('paypal')) paymentMatches = true;
+    if (showClickCollect && providerPayment.includes('click & collect')) paymentMatches = true;
+    
+    // Anbieter zeigen wenn alle Filter zutreffen
+    if (searchMatches && typeMatches && paymentMatches) {
+      marker.addTo(map);
+      visibleCount++;
+      
+      // Bei Suche den Marker hervorheben
+      if (searchTerm.length > 0) {
+        marker.setIcon(L.icon({
+          iconUrl: marker.options.icon.options.iconUrl,
+          iconSize: [40, 40], // Größer machen
+          className: 'search-highlight'
+        }));
+      } else {
+        // Normal-Größe zurücksetzen
+        marker.setIcon(marker.options.icon);
+      }
+    } else {
+      map.removeLayer(marker);
+    }
+  });
+  
+  // Such-Ergebnis anzeigen
+  updateSearchResults(searchTerm, visibleCount);
+}
+
+function updateSearchResults(searchTerm, count) {
+  let resultDiv = document.getElementById('search-results');
+  if (!resultDiv) {
+    resultDiv = document.createElement('div');
+    resultDiv.id = 'search-results';
+    resultDiv.style.cssText = 'background: #e3f2fd; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 12px;';
+    document.getElementById('search-provider').parentNode.insertBefore(resultDiv, document.getElementById('search-provider').nextSibling);
+  }
+  
+  if (searchTerm.length > 0) {
+    if (count === 0) {
+      resultDiv.innerHTML = `❌ Keine Anbieter für "${searchTerm}" gefunden`;
+      resultDiv.style.background = '#ffebee';
+    } else {
+      resultDiv.innerHTML = `✅ ${count} Anbieter für "${searchTerm}" gefunden`;
+      resultDiv.style.background = '#e8f5e8';
+    }
+    resultDiv.style.display = 'block';
+  } else {
+    resultDiv.style.display = 'none';
+  }
+}
+
+function clearSearch() {
+  document.getElementById('search-provider').value = '';
+  applyFilters();
+  
+  // Zoom zurücksetzen
+  if (map && providersData.length > 0) {
+    map.setView([48.68, 9.01], 13);
+  }
+}
+
+function searchAndZoom() {
+  const searchTerm = document.getElementById('search-provider').value.toLowerCase().trim();
+  
+  if (searchTerm.length === 0) {
+    alert('Bitte gib einen Suchbegriff ein!');
+    return;
+  }
+  
+  // Finde passende Anbieter
+  const matchingProviders = providersData.filter(p => 
+    p.name.toLowerCase().includes(searchTerm)
+  );
+  
+  if (matchingProviders.length === 0) {
+    alert(`Keine Anbieter für "${searchTerm}" gefunden!`);
+    return;
+  }
+  
+  if (matchingProviders.length === 1) {
+    // Ein Anbieter gefunden - direkt hinzoomen
+    const provider = matchingProviders[0];
+    map.setView([provider.lat, provider.lng], 16);
+    
+    // Popup öffnen
+    setTimeout(() => {
+      const marker = allMarkers.find(m => 
+        m.options.providerName.toLowerCase().includes(searchTerm)
+      );
+      if (marker) {
+        marker.openPopup();
+      }
+    }, 500);
+    
+    alert(`📍 Zu "${provider.name}" gezoomt!`);
+  } else {
+    // Mehrere Anbieter - zu allen zoomen
+    const group = new L.featureGroup(
+      allMarkers.filter(m => 
+        m.options.providerName.toLowerCase().includes(searchTerm)
+      )
+    );
+    map.fitBounds(group.getBounds().pad(0.1));
+    
+    alert(`📍 ${matchingProviders.length} Anbieter für "${searchTerm}" gefunden und angezeigt!`);
+  }
+  
+  // Filter-Panel schließen
+  toggleFilter();
+}
+
+// Favoriten-System
+function toggleFavorite(providerId, providerName) {
+  const favorites = JSON.parse(localStorage.getItem('favoriteProviders') || '[]');
+  const index = favorites.findIndex(f => f.id === providerId);
+  
+  if (index > -1) {
+    favorites.splice(index, 1);
+    alert(`${providerName} wurde aus den Favoriten entfernt`);
+  } else {
+    favorites.push({ id: providerId, name: providerName, addedDate: new Date().toISOString() });
+    alert(`${providerName} wurde zu den Favoriten hinzugefügt!\n\nSie erhalten jetzt Benachrichtigungen über:\n🔥 Spezielle Angebote\n🌱 Saisonale Produkte\n📱 Verfügbarkeits-Updates`);
+  }
+  
+  localStorage.setItem('favoriteProviders', JSON.stringify(favorites));
+  updateFavoriteButton(providerId);
+  updateFavoritesList();
+}
+
+function updateFavoriteButton(providerId) {
+  const favorites = JSON.parse(localStorage.getItem('favoriteProviders') || '[]');
+  const button = document.getElementById(`fav-${providerId}`);
+  const isFavorite = favorites.some(f => f.id === providerId);
+  
+  if (button) {
+    if (isFavorite) {
+      button.innerHTML = '💖 Favorit entfernen';
+      button.style.backgroundColor = '#E91E63';
+    } else {
+      button.innerHTML = '⭐ Als Favorit hinzufügen';
+      button.style.backgroundColor = '#FFA500';
+    }
+  }
+}
+
+function updateFavoritesList() {
+  const favorites = JSON.parse(localStorage.getItem('favoriteProviders') || '[]');
+  const list = document.getElementById('favoritesList');
+  
+  if (favorites.length === 0) {
+    list.innerHTML = '<p style="color:#666;">Noch keine Favoriten</p>';
+  } else {
+    list.innerHTML = '';
+    favorites.forEach(fav => {
+      list.innerHTML += `<div style="padding:8px; margin:5px 0; background:#f8f9fa; border-radius:6px;">
+        <strong>${fav.name}</strong><br>
+        <small style="color:#666;">Hinzugefügt: ${new Date(fav.addedDate).toLocaleDateString('de-DE')}</small>
+      </div>`;
+    });
+  }
+}
+
+// Benachrichtigungs-System
+function setAvailabilityAlert(product, provider) {
+  const alerts = JSON.parse(localStorage.getItem('availabilityAlerts') || '[]');
+  
+  if (!alerts.some(a => a.product === product && a.provider === provider)) {
+    alerts.push({
+      product,
+      provider,
+      createdDate: new Date().toISOString(),
+      active: true
+    });
+    
+    localStorage.setItem('availabilityAlerts', JSON.stringify(alerts));
+    
+    // Simuliere Push-Benachrichtigung nach 3 Sekunden
+    setTimeout(() => {
+      if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            new Notification(`🌱 ${product} verfügbar!`, {
+              body: `${provider} hat wieder ${product} vorrätig. Jetzt bestellen!`,
+              icon: 'LandGut.png'
+            });
+          }
+        });
+      }
+    }, 3000);
+    
+    if (product === 'Spargel') {
+      alert(`⏰ Spargel-Alert aktiviert!\n\nACHTUNG: Die Spargelsaison endet bald!\nSie werden sofort benachrichtigt, falls bei ${provider} noch Spargel verfügbar wird.\n\n🚨 Tipp: Bestellen Sie schnell - nur noch diese Woche!`);
+    } else if (product === 'Erdbeeren') {
+      alert(`📦 Erdbeeren-Vorrat-Alert aktiviert!\n\nSie werden benachrichtigt, sobald neue Erdbeeren bei ${provider} eingetroffen sind.\n\n⚡ Die Erdbeeren sind sehr beliebt - bestellen Sie schnell!`);
+    } else {
+      alert(`✅ Verfügbarkeits-Alert aktiviert!\n\nSie werden benachrichtigt, sobald "${product}" bei ${provider} wieder verfügbar ist.\n\n💡 Tipp: Aktivieren Sie Browser-Benachrichtigungen für sofortige Updates!`);
+    }
+  } else {
+    alert('Benachrichtigung ist bereits aktiv!');
+  }
+}
+
+// LandGut Pay System
+function planCheckout() {
+  const items = JSON.parse(localStorage.getItem('einkaufsliste') || '[]');
+  
+  if (items.length === 0) {
+    alert('Deine Einkaufsliste ist leer!');
+    return;
+  }
+  
+  // Gruppiere Artikel nach Anbieter
+  const providerGroups = {};
+  items.forEach(item => {
+    if (!providerGroups[item.provider]) {
+      providerGroups[item.provider] = [];
+    }
+    providerGroups[item.provider].push(item);
+  });
+  
+  // Prüfe welche Anbieter traditionell sind (nur Bar/Karte)
+  const traditionalProviders = [];
+  const modernProviders = [];
+  
+  Object.keys(providerGroups).forEach(providerName => {
+    const provider = providersData.find(p => p.name === providerName);
+    if (provider) {
+      const payment = provider.payment.toLowerCase();
+      if (!payment.includes('paypal') && !payment.includes('click')) {
+        traditionalProviders.push(providerName);
+      } else {
+        modernProviders.push(providerName);
+      }
+    }
+  });
+  
+  if (traditionalProviders.length === 0) {
+    alert('Alle deine ausgewählten Anbieter unterstützen bereits digitale Zahlung!\n\nNutze die direkten PayPal-Buttons bei den Produkten.');
+    return;
+  }
+  
+  calculateCheckoutSummary(providerGroups, traditionalProviders, modernProviders);
+}
+
+function calculateCheckoutSummary(providerGroups, traditionalProviders, modernProviders) {
+  let traditionellTotal = 0;
+  let modernTotal = 0;
+  let breakdown = '';
+  
+  // Traditionelle Anbieter
+  if (traditionalProviders.length > 0) {
+    breakdown += '<h4 style="color: #28a745; margin-bottom: 10px;">💳 Mit LandGut Pay bezahlen:</h4>';
+    traditionalProviders.forEach(provider => {
+      let providerTotal = 0;
+      breakdown += `<div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 8px; border-left: 4px solid #28a745;">`;
+      breakdown += `<strong>${provider}</strong><ul style="margin: 5px 0; padding-left: 20px;">`;
+      
+      providerGroups[provider].forEach(item => {
+        const price = parseFloat(item.price) || 0;
+        providerTotal += price;
+        breakdown += `<li>${item.name}${item.price ? ' - ' + item.price + '€' : ''}</li>`;
+      });
+      
+      breakdown += `</ul><small style="color: #666;">Zwischensumme: ${providerTotal.toFixed(2)}€</small></div>`;
+      traditionellTotal += providerTotal;
+    });
+    
+    const serviceCharge = 2.00;
+    traditionellTotal += serviceCharge;
+    breakdown += `<div style="background: #fff3cd; padding: 10px; border-radius: 8px; margin: 10px 0;">
+      <strong>🚀 LandGut Service-Gebühr: ${serviceCharge.toFixed(2)}€</strong><br>
+      <small>Für die Vorabzahlung bei traditionellen Anbietern</small>
+    </div>`;
+  }
+  
+  // Moderne Anbieter (Hinweis)
+  if (modernProviders.length > 0) {
+    breakdown += '<h4 style="color: #0070ba; margin-top: 20px; margin-bottom: 10px;">ℹ️ Separat zu bezahlen:</h4>';
+    modernProviders.forEach(provider => {
+      let providerTotal = 0;
+      breakdown += `<div style="margin-bottom: 15px; padding: 10px; background: #f0f8ff; border-radius: 8px; border-left: 4px solid #0070ba;">`;
+      breakdown += `<strong>${provider}</strong> <small>(unterstützt bereits digitale Zahlung)</small><ul style="margin: 5px 0; padding-left: 20px;">`;
+      
+      providerGroups[provider].forEach(item => {
+        const price = parseFloat(item.price) || 0;
+        providerTotal += price;
+        breakdown += `<li>${item.name}${item.price ? ' - ' + item.price + '€' : ''}</li>`;
+      });
+      
+      breakdown += `</ul><small style="color: #666;">Direkt beim Anbieter: ${providerTotal.toFixed(2)}€</small></div>`;
+      modernTotal += providerTotal;
+    });
+  }
+  
+  document.getElementById('payment-breakdown').innerHTML = breakdown;
+  document.getElementById('total-amount').innerHTML = 
+    `LandGut Pay Gesamtsumme: ${traditionellTotal.toFixed(2)}€` + 
+    (modernTotal > 0 ? `<br><small style="color: #666;">+ ${modernTotal.toFixed(2)}€ separat bei moderneren Anbietern</small>` : '');
+  
+  document.getElementById('checkout-summary').style.display = 'block';
+}
+
+function startLandGutPayment() {
+  const items = JSON.parse(localStorage.getItem('einkaufsliste') || '[]');
+  
+  // Gruppiere nach Anbietern
+  const providerGroups = {};
+  let landgutPayItems = [];
+  
+  items.forEach(item => {
+    const provider = providersData.find(p => p.name === item.provider);
+    if (provider) {
+      const payment = provider.payment.toLowerCase();
+      if (!payment.includes('paypal') && !payment.includes('click')) {
+        landgutPayItems.push(item);
+        if (!providerGroups[item.provider]) {
+          providerGroups[item.provider] = [];
+        }
+        providerGroups[item.provider].push(item);
+      }
+    }
+  });
+  
+  if (landgutPayItems.length === 0) {
+    alert('Keine traditionellen Anbieter in der Liste!');
+    return;
+  }
+  
+  // Modal mit Bestellübersicht füllen
+  let orderSummary = '<h4>📋 Deine LandGut Pay Bestellung:</h4>';
+  let total = 0;
+  
+  Object.keys(providerGroups).forEach(provider => {
+    let providerTotal = 0;
+    orderSummary += `<div style="background: white; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 4px solid #28a745;">`;
+    orderSummary += `<h5 style="margin: 0 0 10px 0; color: #28a745;">${provider}</h5>`;
+    
+    providerGroups[provider].forEach(item => {
+      const price = parseFloat(item.price) || 0;
+      providerTotal += price;
+      orderSummary += `<div style="display: flex; justify-content: space-between; margin: 5px 0;">
+        <span>${item.name}</span>
+        <span><strong>${item.price ? item.price + '€' : 'Preis auf Anfrage'}</strong></span>
+      </div>`;
+    });
+    
+    orderSummary += `<div style="border-top: 1px solid #ddd; margin-top: 10px; padding-top: 5px; font-weight: bold;">
+      Zwischensumme: ${providerTotal.toFixed(2)}€
+    </div></div>`;
+    total += providerTotal;
+  });
+  
+  const serviceCharge = 2.00;
+  total += serviceCharge;
+  
+  orderSummary += `<div style="background: #28a745; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 15px 0;">
+    <div style="font-size: 1.1rem;"><strong>Gesamtsumme: ${total.toFixed(2)}€</strong></div>
+    <div style="font-size: 0.9rem; opacity: 0.9;">(inkl. 2€ LandGut Service)</div>
+  </div>`;
+  
+  // Abholtermine generieren
+  let pickupSchedule = '';
+  Object.keys(providerGroups).forEach(provider => {
+    pickupSchedule += `<div style="background: white; padding: 10px; border-radius: 6px; margin: 8px 0;">
+      <strong>${provider}</strong><br>
+      <select style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ddd; margin-top: 5px;">
+        <option value="">Abholzeit wählen...</option>
+        <option value="heute-15">Heute 15:00 - 18:00</option>
+        <option value="morgen-10">Morgen 10:00 - 13:00</option>
+        <option value="morgen-15">Morgen 15:00 - 18:00</option>
+        <option value="uebermorgen-10">Übermorgen 10:00 - 13:00</option>
+      </select>
+    </div>`;
+  });
+  
+  document.getElementById('landgut-order-summary').innerHTML = orderSummary;
+  document.getElementById('pickup-schedule').innerHTML = pickupSchedule;
+  document.getElementById('landgutPayModal').style.display = 'block';
+}
+
+function closeLandGutPay() {
+  document.getElementById('landgutPayModal').style.display = 'none';
+}
+
+function processLandGutPayment() {
+  const customerName = document.getElementById('landgut-customer-name').value;
+  const customerEmail = document.getElementById('landgut-customer-email').value;
+  const customerPhone = document.getElementById('landgut-customer-phone').value;
+  
+  if (!customerName || !customerEmail || !customerPhone) {
+    alert('Bitte fülle alle Kontaktdaten aus!');
+    return;
+  }
+  
+  // Prüfe ob alle Abholzeiten gewählt wurden
+  const pickupSelects = document.querySelectorAll('#pickup-schedule select');
+  let allSelected = true;
+  pickupSelects.forEach(select => {
+    if (!select.value) allSelected = false;
+  });
+  
+  if (!allSelected) {
+    alert('Bitte wähle für alle Anbieter eine Abholzeit!');
+    return;
+  }
+  
+  const paymentId = 'LG' + Date.now();
+  const payments = JSON.parse(localStorage.getItem('landgutPayments') || '[]');
+  
+  payments.push({
+    paymentId,
+    customerName,
+    customerEmail,
+    customerPhone,
+    items: JSON.parse(localStorage.getItem('einkaufsliste') || '[]'),
+    status: 'bezahlt',
+    paymentDate: new Date().toLocaleString('de-DE'),
+    paymentMethod: 'LandGut Pay',
+    serviceCharge: 2.00
+  });
+  
+  localStorage.setItem('landgutPayments', JSON.stringify(payments));
+  
+  alert(`🎉 LandGut Pay Zahlung erfolgreich!\n\nZahlungs-ID: ${paymentId}\n\n✅ Was passiert jetzt:\n• Du erhältst eine Bestätigung per E-Mail\n• Die Anbieter werden über deine Bestellung informiert\n• Du kannst deine Produkte zu den gewählten Zeiten abholen\n• Die Anbieter erhalten das Geld nach erfolgreicher Abholung\n\nVielen Dank für die Nutzung von LandGut Pay! 🚀`);
+  
+  closeLandGutPay();
+  clearList();
+}
+</script>
+</body>
+</html>
